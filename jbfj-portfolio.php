@@ -2,9 +2,15 @@
 /* Plugin Name: JBFJ Portfolio
  * Author: Bryce Flory
  * Author URI: bryceflory.com
- * Version: 0.1
+ * Version: 0.2
  * Description: Custom Portfolio Management Plugin
  */
+ 
+// set constants
+define( 'JBFJ_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'JBFJ_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
+require_once( JBFJ_PLUGIN_PATH . '/lib/jbfj-portfolio-loops.php' );
  
 // CPT for my projects
 function register_cpt_project() {
@@ -27,7 +33,7 @@ function register_cpt_project() {
     $args = array( 
         'labels' => $labels,
         'hierarchical' => false,   
-        'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields' ),
+        'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'thumbnail' ),
         'taxonomies' => array( 'category' ),
         'public' => true,
         'show_ui' => true,
