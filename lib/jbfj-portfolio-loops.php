@@ -12,11 +12,14 @@ function jbfj_projects_grid( $max_posts = -1 ) {
 	// Defaults
 	$defaults = array(
 		// structure
-		'figure_class' => 'effect-lily',
-		'each_before' => '<div class="">',
+		'list_before' => '<div class="clearfix">',
+		'list_after' => '</div>',
+		'each_before' => '<div class="col-sm-4">',
 		'each_after' => '</div>',
 		
-		//
+		// content
+		'figure_class' => 'effect-zoe',
+		'icon_class' => 'fa fa-eye fa-fw'
 	);
 	
 	$default_args = apply_filters( 'jbfj_project_filter', '' );	
@@ -25,22 +28,28 @@ function jbfj_projects_grid( $max_posts = -1 ) {
 	$projects = new WP_Query( $args );
 
 	if ( $projects -> have_posts() ) :
-		while( $projects -> have_posts() ) : $projects -> the_post();
-			
-			ob_start(); ?>
+		
+		echo $list_before;
+		
+			while( $projects -> have_posts() ) : $projects -> the_post();
+				
+				?>
+					<?php echo $each_before; ?>
+					<figure class="<?php echo $figure_class; ?>">				
+						<a href="<?php echo get_permalink(); ?>"><?php the_post_thumbnail(); ?></a>
+						<figcaption>
+							<?php the_title('<h3>', '</h3>'); ?>
+							<p><?php get_post_meta( 'description' ); ?></p>
+							<p class="icon-links"><a href="<?php echo get_permalink(); ?>"><i class="<?php echo $icon_class; ?>"></i></a></p>
+						</figcaption>			
+					</figure>
+					<?php echo $each_after; ?>
+				
+				<?php
 	
-				<figure class="<?php echo $figure_class; ?>">				
-					<img src="img/1.jpg" alt="img01"/>
-					<figcaption>
-						<h2>Nice <span>Lily</span></h2>
-						<p>Lily likes to play with crayons and pencils</p>
-						<a href="#">View more</a>
-					</figcaption>			
-				</figure>
+			endwhile; 
 			
-			<?php return ob_get_clean();
-
-		endwhile; 
+		echo $list_after;
 		
 	else : ?> 
 	
@@ -50,24 +59,4 @@ function jbfj_projects_grid( $max_posts = -1 ) {
 	
 	
 	<?php endif; wp_reset_postdata();
-}
-
-// single project loop
-function jbfj_project() {
-	
-	$args = array(
-		'post_type' => 'project'
-	);
-	
-	$project = new WP_Query( $args );
-	
-	if ( $project -> have_posts() ) {
-		while ( $project -> have_posts() ) : $project -> the_post();
-		
-			//output here
-			the_content();
-			
-		endwhile;
-	} wp_reset_postdata();
-	
 }
